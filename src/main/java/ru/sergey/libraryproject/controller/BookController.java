@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sergey.libraryproject.dao.BookDAO;
 import ru.sergey.libraryproject.model.Book;
@@ -31,7 +33,14 @@ public class BookController {
     }
 
     @GetMapping("/new")
-    public String createBook(){
+    public String createBookForm(@ModelAttribute("book") Book book){
         return "/books/new";
     }
+
+    @PostMapping
+    public String createBook(@ModelAttribute("book") Book book) {
+        bookDAO.save(book);
+        return "redirect:/books";
+    }
+
 }
