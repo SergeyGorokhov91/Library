@@ -48,4 +48,15 @@ public class PersonController {
         return "redirect:/people";
     }
 
+    @GetMapping("/new")
+    public String createPersonPage(@ModelAttribute("person") Person person){
+        return "people/new";
+    }
+
+    @PostMapping
+    public String createPerson(@ModelAttribute("person") Person person) {
+        personDAO.createPerson(person);
+        return "redirect:/people";
+    }
+
 }

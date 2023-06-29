@@ -19,19 +19,28 @@ public class PersonDAO {
 
 
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
+        return jdbcTemplate.query("SELECT * FROM person",
+                new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person readPerson(int id) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?", new BeanPropertyRowMapper<>(Person.class),id)
+        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?",
+                        new BeanPropertyRowMapper<>(Person.class),id)
                 .stream().findAny().orElse(null);
     }
 
     public void updatePerson(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET fullname=?, birthage=? WHERE person_id=?", person.getFullName(),person.getBirthAge(),id);
+        jdbcTemplate.update("UPDATE person SET fullname=?, birthage=? WHERE person_id=?",
+                person.getFullName(),person.getBirthAge(),id);
     }
 
     public void deletePerson(int id) {
-        jdbcTemplate.update("DELETE FROM person WHERE person_id=?", id);
+        jdbcTemplate.update("DELETE FROM person WHERE person_id=?",
+                id);
+    }
+
+    public void createPerson(Person person) {
+        jdbcTemplate.update("INSERT INTO person(fullname,birthage) VALUES (?,?)",
+                person.getFullName(),person.getBirthAge());
     }
 }
