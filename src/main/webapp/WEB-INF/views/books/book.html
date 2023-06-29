@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,6 +13,10 @@
 
     <br>
     <a th:href="@{/books/{id}/edit(id=${book.getBook_id()})}">Update person</a>
+    <form th:method="DELETE" th:action="@{book/{id}(id=${book.getBook_id()})}" th:object="${person}">
+        <input type="submit" value="delete book">
+    </form>
+
     <br>
     <a th:href="@{/books}" >back</a>
 </body>
