@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="${person.getFullName()} +', '+${person.getBirthAge()}"></p>
+<!-- крч, тут должен быть код, который
+если список взятых книг пуст,
+    пишет,что чувак книг не взял,
+иначе
+    печатает список-->
+    <br>
+    <hr>
+    <a th:href="@{person/{id}/edit(id=${person.getPerson_id})}">Edit person</a>
+    <form th:method="DELETE" th:action="@{person/{id}(id=${person.getPerson_id})}" th:object="${person}">
+        <input type="submit" value="delete person">
+    </form>
+</body>
+</html>
