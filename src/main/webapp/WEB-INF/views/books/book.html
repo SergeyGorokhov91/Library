@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="${book.getBook_id()}">book id</p>
+    <p th:text="${book.getPerson_id()}">person id</p>
+    <p th:text="${book.getName()}">name</p>
+    <p th:text="${book.getAuthor()}">author</p>
+    <p th:text="${book.getYear()}">year</p>
+
+    <br>
+    <a th:href="@{/books/{id}/edit(id=${book.getBook_id()})}">Update person</a>
+    <br>
+    <a th:href="@{/books}" >back</a>
+</body>
+</html>
