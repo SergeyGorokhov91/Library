@@ -26,4 +26,8 @@ public class PersonDAO {
         return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?", new BeanPropertyRowMapper<>(Person.class),id)
                 .stream().findAny().orElse(null);
     }
+
+    public void updatePerson(int id, Person person) {
+        jdbcTemplate.update("UPDATE person SET fullname=?, birthage=? WHERE person_id=?", person.getFullName(),person.getBirthAge(),id);
+    }
 }

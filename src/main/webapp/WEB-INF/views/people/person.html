@@ -13,7 +13,7 @@
     печатает список-->
     <br>
     <hr>
-    <a th:href="@{person/{id}/edit(id=${person.getPerson_id})}">Edit person</a>
+    <a th:href="@{/people/{id}/edit(id=${person.getPerson_id})}">Edit person</a>
     <form th:method="DELETE" th:action="@{person/{id}(id=${person.getPerson_id})}" th:object="${person}">
         <input type="submit" value="delete person">
     </form>
