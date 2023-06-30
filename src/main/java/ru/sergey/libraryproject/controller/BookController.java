@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.sergey.libraryproject.dao.BookDAO;
+import ru.sergey.libraryproject.dao.PersonDAO;
 import ru.sergey.libraryproject.model.Book;
+import ru.sergey.libraryproject.model.Person;
 
 import java.util.List;
 
@@ -13,10 +15,12 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping
@@ -41,9 +45,24 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String book(@PathVariable("id") int id, Model model) {
+    public String book(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book",bookDAO.show(id));
+        Integer personId = bookDAO.show(id).getPerson_id();
+        if(personId == null) model.addAttribute("peopleList",personDAO.index());
+        else model.addAttribute("personById",personDAO.readPerson(personId));
         return "books/book";
+    }
+
+    @PostMapping("/{id}/attach")
+    public String attachBook(@PathVariable("id") int id, @ModelAttribute("person") Person person){
+        bookDAO.attachPersonToBook(person.getPerson_id(), id);
+        return "redirect:/books/{id}";
+    }
+
+    @PatchMapping("/{id}/unbind")
+    public String unbindBook(@PathVariable("id") int id) {
+        bookDAO.unbind(id);
+        return "redirect:/books/{id}";
     }
 
     @GetMapping("/{id}/edit")
