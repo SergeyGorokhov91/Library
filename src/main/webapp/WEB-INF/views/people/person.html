@@ -11,7 +11,18 @@
     пишет,что чувак книг не взял,
 иначе
     печатает список-->
-    <br>
+    <div th:if="${#lists.isEmpty(books)}">
+        <p>This person don`t have any books</p>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(books)}">
+        <hr>
+        <b>Books:</b>
+        <div th:each="book:${books}">
+            <p th:text="${book.getName()}+', '+${book.getYear()}"></p>
+        </div>
+    </div>
+
     <hr>
     <a th:href="@{/people/{id}/edit(id=${person.getPerson_id})}">Edit person</a>
     <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id})}" th:object="${person}">
