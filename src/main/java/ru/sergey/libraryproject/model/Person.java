@@ -4,14 +4,14 @@ public class Person {
 
     private int person_id;
     private String fullName;
-    private int birthAge;
+    private int birthYear;
 
     public Person() {
     }
 
-    public Person(String fullName, int birthAge) {
+    public Person(String fullName, int birthYear) {
         this.fullName = fullName;
-        this.birthAge = birthAge;
+        this.birthYear = birthYear;
 
     }
 
@@ -31,12 +31,12 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public int getBirthAge() {
-        return birthAge;
+    public int getBirthYear() {
+        return birthYear;
     }
 
-    public void setBirthAge(int birthAge) {
-        this.birthAge = birthAge;
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 
 }

@@ -30,8 +30,8 @@ public class PersonDAO {
     }
 
     public void updatePerson(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET fullname=?, birthage=? WHERE person_id=?",
-                person.getFullName(),person.getBirthAge(),id);
+        jdbcTemplate.update("UPDATE person SET fullname=?, birthyear=? WHERE person_id=?",
+                person.getFullName(),person.getBirthYear(),id);
     }
 
     public void deletePerson(int id) {
@@ -40,7 +40,7 @@ public class PersonDAO {
     }
 
     public void createPerson(Person person) {
-        jdbcTemplate.update("INSERT INTO person(fullname,birthage) VALUES (?,?)",
-                person.getFullName(),person.getBirthAge());
+        jdbcTemplate.update("INSERT INTO person(fullname,birthyear) VALUES (?,?)",
+                person.getFullName(),person.getBirthYear());
     }
 }
