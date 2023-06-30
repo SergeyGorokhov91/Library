@@ -28,5 +28,7 @@
     <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id})}" th:object="${person}">
         <input type="submit" value="delete person">
     </form>
+    <hr>
+    <a th:href="@{/people}">back</a>
 </body>
 </html>

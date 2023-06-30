@@ -39,7 +39,7 @@
     <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getBook_id()})}" th:object="${person}">
         <input type="submit" value="delete book">
     </form>
-    <br>
-    <a th:href="@{/books}" >back</a>
+    <hr>
+    <a th:href="@{/books}">back</a>
 </body>
 </html>
