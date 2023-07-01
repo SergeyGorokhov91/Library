@@ -1,15 +1,26 @@
 package ru.sergey.libraryproject.model;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class Person {
 
     private int person_id;
+
+    @NotEmpty(message = "Name should not be empty")
     private String fullName;
-    private int birthYear;
+
+    @Min(value = 1900,message = "Birth year cant be less than 1900")
+    @Max(value = 2023,message = "Birth year cant be bigger than 2023")
+    @NotNull(message = "birth year cant be empty")
+    private Integer birthYear;
 
     public Person() {
     }
 
-    public Person(String fullName, int birthYear) {
+    public Person(String fullName, Integer birthYear) {
         this.fullName = fullName;
         this.birthYear = birthYear;
 
@@ -31,11 +42,11 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public int getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(int birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
 

@@ -8,10 +8,12 @@
   <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getPerson_id})}" th:object="${person}">
       <label for="fullname">change name</label>
       <input th:field="*{fullName}" th:value="${person.getFullName()}" id="fullname">
+      <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">name update error</div>
       <br>
 
       <label fro="birthyear">change birth year</label>
       <input th:field="*{birthYear}" th:values="${person.getBirthYear()}" id="birthyear">
+      <div th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">birth year update error</div>
       <br>
       <input type="submit" value="change person">
   </form>
