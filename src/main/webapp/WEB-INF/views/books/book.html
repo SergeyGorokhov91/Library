@@ -20,11 +20,11 @@
      в строку бразузера выдаёт "?person_id=*id*",
      хотя ожидается, что будет кидать значение в модель сразу,
      а почему так я не знаю, но с POST всё работает как ожидается -->
-        <form method="POST" th:action="@{/books/{id}/attach(id=${book.getBook_id()})}" th:object="${book}">
+        <form method="POST" th:action="@{/books/{id}/attach(id=${book.getId()})}" th:object="${book}">
             <label for="person">Choose person: </label>
-            <select th:object="${person}" th:field="*{person_id}" id="person">
+            <select th:object="${person}" th:field="*{id}" id="person">
                 <option th:each="person:${peopleList}"
-                        th:value="${person.getPerson_id()}"
+                        th:value="${person.getId()}"
                         th:text="${person.getFullName()}">
                 </option>
             </select>
@@ -36,7 +36,7 @@
 
     <hr>
     <a th:href="@{/books/{id}/edit(id=${book.getBook_id()})}">Update person</a>
-    <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getBook_id()})}" th:object="${person}">
+    <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${person}">
         <input type="submit" value="delete book">
     </form>
     <hr>
