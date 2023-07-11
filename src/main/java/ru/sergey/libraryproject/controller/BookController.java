@@ -26,9 +26,6 @@ public class BookController {
     @GetMapping
     public String getBooks(Model model) {
         List<Book> list = bookDAO.index();
-        for (Book book: list) {
-            System.out.println(book.getBook_id()+","+book.getPerson_id()+", "+book.getName()+", "+book.getAuthor()+", "+book.getYear());
-        }
         model.addAttribute("books",list);
         return "/books/index";
     }
@@ -47,15 +44,15 @@ public class BookController {
     @GetMapping("/{id}")
     public String book(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book",bookDAO.show(id));
-        Integer personId = bookDAO.show(id).getPerson_id();
-        if(personId == null) model.addAttribute("peopleList",personDAO.index());
-        else model.addAttribute("personById",personDAO.readPerson(personId));
+        Person personThatTakeBook= bookDAO.show(id).getPerson();
+        if(personThatTakeBook == null) model.addAttribute("peopleList",personDAO.index());
+        else model.addAttribute("personById",personDAO.readPerson(personThatTakeBook.getId()));
         return "books/book";
     }
 
     @PostMapping("/{id}/attach")
     public String attachBook(@PathVariable("id") int id, @ModelAttribute("person") Person person){
-        bookDAO.attachPersonToBook(person.getPerson_id(), id);
+        bookDAO.attachPersonToBook(person.getId(), id);
         return "redirect:/books/{id}";
     }
 
