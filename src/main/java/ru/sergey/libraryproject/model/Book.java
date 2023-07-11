@@ -1,41 +1,51 @@
 package ru.sergey.libraryproject.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "book")
 public class Book {
 
-    private int book_id;
-    private Integer person_id;
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "author")
     private String author;
+    @Column(name = "year")
     private int year;
+
+    @ManyToOne
+    @JoinColumn(name = "person_id",referencedColumnName = "person_id")
+    private Person person;
 
     public Book() {
     }
 
-    public Book(int book_id, Integer person_id, String name, String author, int year) {
-        this.book_id = book_id;
-        this.person_id = person_id;
+    public Book(String name, String author, int year) {
         this.name = name;
         this.author = author;
         this.year = year;
     }
 
-    public int getBook_id() {
-        return book_id;
+    public int getId() {
+        return id;
     }
 
-    public void setBook_id(int book_id) {
-        this.book_id = book_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Integer getPerson_id() {
-        return person_id;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPerson_id(Integer person_id) {
-        this.person_id = person_id;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public String getName() {
