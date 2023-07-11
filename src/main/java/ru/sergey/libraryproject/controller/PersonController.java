@@ -38,7 +38,6 @@ public class PersonController {
 
     @GetMapping("/{id}/edit")
     public String updatePersonPage(@PathVariable("id") int id, Model model) {
-
         model.addAttribute("person",personDAO.readPerson(id));
         return "people/update";
     }
@@ -53,8 +52,8 @@ public class PersonController {
             //Но если из этого же окна отправиль офрму снова ошибившись, то откроется страница изменения
             // по адресу /people/0, которая ошибки покажет, но потеряет id.
             //Решил проблему тем, что обнавляю каждый раз id объекта в модели, но это как-то не ок
-            if(person.getPerson_id() == 0) {
-                person.setPerson_id(id);
+            if(person.getId() == 0) {
+                person.setId(id);
             }
             return "people/update";
         }
