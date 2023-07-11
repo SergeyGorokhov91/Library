@@ -1,46 +1,52 @@
 package ru.sergey.libraryproject.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sergey.libraryproject.model.Person;
 
+import javax.security.auth.login.Configuration;
 import java.util.List;
 
 @Component
+@Transactional
 public class PersonDAO {
-    private JdbcTemplate jdbcTemplate;
+
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM person",
-                new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+        return session.createSelectionQuery("SELECT p FROM Person p",Person.class).getResultList();
     }
 
     public Person readPerson(int id) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?",
-                        new BeanPropertyRowMapper<>(Person.class),id)
-                .stream().findAny().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Person.class,id);
     }
 
     public void updatePerson(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET fullname=?, birthyear=? WHERE person_id=?",
-                person.getFullName(),person.getBirthYear(),id);
+        Session session = sessionFactory.getCurrentSession();
+        Person updatedPerson = session.get(Person.class,id);
+        updatedPerson.setBirthYear(person.getBirthYear());
+        updatedPerson.setFullName(person.getFullName());
     }
 
     public void deletePerson(int id) {
-        jdbcTemplate.update("DELETE FROM person WHERE person_id=?",
-                id);
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(Person.class,id));
     }
 
     public void createPerson(Person person) {
-        jdbcTemplate.update("INSERT INTO person(fullname,birthyear) VALUES (?,?)",
-                person.getFullName(),person.getBirthYear());
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(person);
     }
 }
