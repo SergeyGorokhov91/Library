@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-  <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getPerson_id})}" th:object="${person}">
+  <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId})}" th:object="${person}">
       <label for="fullname">change name</label>
       <input th:field="*{fullName}" th:value="${person.getFullName()}" id="fullname">
       <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">name update error</div>
