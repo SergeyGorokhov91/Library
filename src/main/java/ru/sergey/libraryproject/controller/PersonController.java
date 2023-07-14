@@ -6,40 +6,40 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.sergey.libraryproject.dao.BookDAO;
-import ru.sergey.libraryproject.dao.PersonDAO;
-import ru.sergey.libraryproject.model.Person;
+import ru.sergey.libraryproject.models.Person;
+import ru.sergey.libraryproject.services.BookService;
+import ru.sergey.libraryproject.services.PersonService;
 
 @Controller
 @RequestMapping("/people")
 public class PersonController {
 
-    private final PersonDAO personDAO;
-    private final BookDAO bookDAO;
+    private PersonService personService;
+    private BookService bookService;
 
     @Autowired
-    public PersonController(PersonDAO personDAO, BookDAO bookDAO) {
-        this.personDAO = personDAO;
-        this.bookDAO = bookDAO;
+    public PersonController(PersonService personService, BookService bookService) {
+        this.personService = personService;
+        this.bookService = bookService;
     }
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("peopleList", personDAO.index());
+        model.addAttribute("peopleList", personService.findAll());
         return "people/index";
     }
 
     @GetMapping("{id}")
     public String personPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.readPerson(id));
-        model.addAttribute("books", bookDAO.getBookThatPersonTake(id));
+        model.addAttribute("person", personService.findById(id));
+        model.addAttribute("books", bookService.findBooksByOwner(id));
         return "/people/person";
     }
 
     @GetMapping("/{id}/edit")
     public String updatePersonPage(@PathVariable("id") int id, Model model) {
 
-        model.addAttribute("person",personDAO.readPerson(id));
+        model.addAttribute("person",personService.findById(id));
         return "people/update";
     }
 
@@ -53,18 +53,18 @@ public class PersonController {
             //Но если из этого же окна отправиль офрму снова ошибившись, то откроется страница изменения
             // по адресу /people/0, которая ошибки покажет, но потеряет id.
             //Решил проблему тем, что обнавляю каждый раз id объекта в модели, но это как-то не ок
-            if(person.getPerson_id() == 0) {
-                person.setPerson_id(id);
+            if(person.getId() == 0) {
+                person.setId(id);
             }
             return "people/update";
         }
-        personDAO.updatePerson(id,person);
+        personService.update(id,person);
         return "redirect:/people";
     }
 
     @DeleteMapping({"{id}"})
     public String deletePerson(@PathVariable("id") int id) {
-        personDAO.deletePerson(id);
+        personService.delete(id);
         return "redirect:/people";
     }
 
@@ -79,7 +79,7 @@ public class PersonController {
         if(bindingResult.hasErrors()) {
             return "people/new";
         }
-        personDAO.createPerson(person);
+        personService.save(person);
         return "redirect:/people";
     }
 
